@@ -1,4 +1,4 @@
-# greetings #
+# Greetings #
 
 TODO Describe the plugin shortly here.
 
@@ -29,7 +29,7 @@ to complete the installation from the command line.
 
 ## License ##
 
-2023 <ThanIv> <ivthankh@gmail.com>
+2022 Your name <your@email>
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software

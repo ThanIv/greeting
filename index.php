@@ -12,15 +12,19 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>;.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
+ * Main file to view greetings
+ *
  * @package     local_greetings
- * @copyright   2023 Than Iv <ivthankh@gmail.com>
+ * @copyright   2022 Your name <your@email>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once('../../config.php');
-require_once($CFG->dirroot. '/local/greetings/lib.php');
+require_once($CFG->dirroot . '/local/greetings/lib.php');
+
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/local/greetings/index.php'));
@@ -29,6 +33,19 @@ $PAGE->set_title($SITE->fullname);
 $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
 $messageform = new \local_greetings\form\message_form();
+
+if ($data = $messageform->get_data()) {
+    $message = required_param('message', PARAM_TEXT);
+
+    if (!empty($message)) {
+        $record = new stdClass;
+        $record->message = $message;
+        $record->timecreated = time();
+        $record->userid = $USER->id;
+
+        $DB->insert_record('local_greetings_messages', $record);
+    }
+}
 
 echo $OUTPUT->header();
 
@@ -65,18 +82,5 @@ foreach ($messages as $m) {
 }
 
 echo $OUTPUT->box_end();
-
-if ($data = $messageform->get_data()) {
-    $message = required_param('message', PARAM_TEXT);
-
-    if (!empty($message)) {
-        $record = new stdClass;
-        $record->message = $message;
-        $record->timecreated = time();
-        $record->userid = $USER->id;
-
-        $DB->insert_record('local_greetings_messages', $record);
-    }
-}
 
 echo $OUTPUT->footer();
